@@ -1,11 +1,4 @@
 % --------------------------------
-% addpath
-% --------------------------------
-
-addpath(genpath('/Volumes/My Passport/NICK/Chang Lab 2016/courtney/codes/'));
-
-%%
-% --------------------------------
 % load in files
 % --------------------------------
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
@@ -24,7 +17,7 @@ umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data
 % separate by trial / image type
 % --------------------------------
 
-wantedTimes = separateTrials3(allLabels,allTimes,'travel bar','neg',[3]); % separate based on trial events
+wantedTimes = separateTrials3(allLabels,allTimes,'travel bar','neg',[1]); % separate based on trial events
 
 % --------------------------------
 % reject images that were displayed for too little time
