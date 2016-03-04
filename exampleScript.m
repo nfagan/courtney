@@ -5,7 +5,7 @@
 umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
-allOrders = targOrder(allLabels,'removeAbove',1);
+[allOrders,orderInds] = targOrder(allLabels,'removeAbove',1);
 
 % --------------------------------
 % get valence
@@ -18,7 +18,7 @@ allOrders = targOrder(allLabels,'removeAbove',1);
 % separate by trial / image type
 % --------------------------------
 
-wantedTimes = separateTrials3(allLabels,allTimes,'travel bar','neg',[1]); % separate based on trial events
+[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','neg',[1]); % separate based on trial events
 
 % --------------------------------
 % reject images that were displayed for too little time
@@ -31,7 +31,7 @@ wantedTimes = durThresh(wantedTimes,threshold);
 % ensure event files correspond to image times
 % --------------------------------
 
-[wantedTimes,allEvents,allLabels] = fixLengths(wantedTimes,allEvents,allLabels); %match lengths of all pertinent variables
+[wantedTimes,allEvents,allLabels,imageIndices] = fixLengths2(wantedTimes,allEvents,allLabels,imageIndices); %match lengths of all pertinent variables
 
 % --------------------------------
 % get looking durations, pupil sizes, etc.

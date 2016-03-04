@@ -4,8 +4,9 @@
 % wantedTrials - 'Maxed Out' or 'Travel Bar'
 % valence - 'pos','neg','all valence','social','nonsocial',
 % 'all social','all'
-function [wantedTimes] = separateTrials3(allLabels,allTimes,wantedTrials,valence,ttUse)
+function [varargout] = separateTrials3(allLabels,allTimes,wantedTrials,valence,ttUse)
 
+storeIndices = cell(1,length(allLabels));
 wantedTimes = cell(1,length(allLabels));
 wantedTrials = lower(wantedTrials); %make lowercase
 
@@ -89,6 +90,10 @@ for j = 1:length(oneFileLabels)-3;
     end
 
 end;
+indices = [];
+allIndices = 1:length(oneFileLabels);
+indices(:,1) = allIndices(logical(imageDisplayedIndex));
+indices(:,2) = allIndices(logical(travelBarSelectedIndex));
 
 startTimes = oneFileTimes(logical(imageDisplayedIndex),2);
 startTimes(:,2) = oneFileTimes(logical(travelBarSelectedIndex),2);
@@ -119,7 +124,9 @@ end
 
 toRemove = ~toKeep;
 startTimes(toRemove,:) = []; %get rid of unwanted valence (or don't get rid of anything, if case 'all');
+indices(toRemove,:) = [];
 
+storeIndices{k} = indices;
 wantedTimes{k} = startTimes;
 clear startTimes;
 end
@@ -128,6 +135,12 @@ check = concatenateData(wantedTimes);
 
 if isempty(check);
     error('No trials match specified criteria');
+end
+
+varargout{1} = wantedTimes;
+
+if nargout == 2;
+    varargout{2} = storeIndices;    
 end
 
 
