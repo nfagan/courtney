@@ -64,7 +64,7 @@ for j = 1:length(oneFileLabels)-3;
         if ~toRid;
             imageDisplayedIndex(j,:) = 1;
             travelBarSelectedIndex(j+3,:) = 1;
-            clear ttCnd1 ttCnd2
+            ttCnd1 = zeros(1,length(ttUse)); ttCnd2 = zeros(1,length(ttUse));
             if ~isempty(ttUse);
                 for kk = 1:length(ttUse);            
                     ttUseStr = horzcat('TT_use: ',num2str(ttUse(kk)));

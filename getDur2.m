@@ -127,18 +127,18 @@ for i = 1:length(wantedTimes);
     sizePerFile{i} = sizePerImage;
     nFixPerFile{i} = nFixPerImage;
     firstLookPerFile{i} = firstLookPerImage;    
-    allExclude{i} = exclude;
+%     allExclude{i} = exclude;
     
 end
 
 [saveDurs,savePupil,saveNFix,saveFirstLook] = concatenateData(dursPerFile,sizePerFile,nFixPerFile,firstLookPerFile);
 savePatchResidence = concatenateData(patchResidencePerFile);
 
-allExclude = sum(concatenateData(allExclude));
+% allExclude = sum(concatenateData(allExclude));
 %%%% outputs
 data.allDurations = saveDurs;
 data.firstLook = saveFirstLook;
 data.pupilSize = savePupil;
 data.nFixations = sum(saveNFix);
 data.patchResidence = savePatchResidence;
-data.excluded = allExclude;
+% data.excluded = allExclude;

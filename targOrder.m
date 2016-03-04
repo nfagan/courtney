@@ -1,0 +1,90 @@
+function allOrders = targOrder(allLabels,varargin)
+
+params = struct(... %default values of params struct
+    'maxChoices',8, ...
+    'removeAbove',0, ...
+    'concatenate',1 ...
+    );    
+
+paramNames = fieldnames(params);
+
+nArgs = length(varargin);
+if round(nArgs/2)~=nArgs/2
+   error('Name-value pairs are incomplete!')
+end
+
+for pair = reshape(varargin,2,[])
+   inpName = pair{1};
+   if any(strcmp(inpName,paramNames))
+      params.(inpName) = pair{2};
+   else
+      error('%s is not a recognized parameter name',inpName)
+   end
+end
+
+allOrders = cell(1,length(allLabels));
+for i = 1:length(allLabels);
+    oneFile = allLabels{i}; orderInd = zeros(length(oneFile),1);
+    for j = 1:length(oneFile)     
+        oneLab = oneFile{j};
+        if length(oneLab) >= 12;            
+            if strcmp(oneLab(1:12),'colorOrder: ');
+                orderInd(j) = 1;
+            else
+                orderInd(j) = 0;
+            end
+        else
+            orderInd(j) = 0;
+        end
+    end
+    cols = 1:length(oneFile);
+    orderInds = cols(logical(orderInd));
+    
+    if isempty(orderInds);
+        error(['No start indices were found. Probably this is because the' ...
+            , ' syntax for ''colorOrder:'' is different in this file']);
+        fprintf('file number = %d',i);
+    else
+        orderInds(2,:) = 0; orderInds(2,end) = length(oneFile);
+        orderInds(2,1:end-1) = orderInds(1,2:end);
+        storeOrders = cell(1,size(orderInds,2));
+        for k = 1:size(orderInds,2);
+            extrLabels = oneFile(orderInds(1,k):orderInds(2,k));
+            rows = 1:length(extrLabels);
+            
+            posInd = rows(strcmp(extrLabels,'pos_image'));
+            negInd = rows(strcmp(extrLabels,'neg_image'));
+            
+            posInd(2,:) = 1; negInd(2,:) = 0; allInd = horzcat(posInd,negInd);
+            [~,sortInd] = sort(allInd(1,:));
+            
+            intOrders = allInd(2,sortInd);
+            if length(intOrders) < params.maxChoices;
+                intOrders(end+1:params.maxChoices) = NaN;
+            elseif length(intOrders) > params.maxChoices && ~params.removeAbove
+                fprintf('File Number: %d\nLabels Index: %d\n',i,k);
+                error(['There were %d choices in this ''environment'', which is more' ...
+                    , ' than the specified maximum (%d). Increase the parameter' ...
+                    , ' ''maxChoices'' to avoid this, or make the parameter' ...
+                    , ' ''removeAbove'' = 1 to remove above-threshold ''environments'''] ...
+                    , length(intOrders),params.maxChoices);
+            else
+                if length(intOrders) > params.maxChoices && params.removeAbove
+                    intOrders = [];
+                end
+            end
+            
+            storeOrders{k} = intOrders;
+        end
+            
+    end
+    
+storeOrders = concatenateData(remEmpty(storeOrders));
+allOrders{i} = storeOrders;
+end
+
+if params.concatenate
+    allOrders = concatenateData(allOrders);
+end
+        
+

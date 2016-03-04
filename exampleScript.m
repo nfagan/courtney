@@ -5,6 +5,7 @@
 umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
+allOrders = targOrder(allLabels,'removeAbove',1);
 
 % --------------------------------
 % get valence
