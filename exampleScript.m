@@ -5,7 +5,18 @@
 umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
+
+% --------------------------------
+% proportions
+% --------------------------------
+
 [allOrders,orderInds] = targOrder(allLabels,'removeAbove',1);
+[posProp] = targProp(allOrders,'treatDivZero',[1 NaN]);
+
+%%
+n = plotProp(posProp,'plotType','hist','histEdges',[0:.3333:4]);
+
+%%
 
 % --------------------------------
 % get valence
