@@ -1,3 +1,6 @@
+% structInpParse.m - function for parsing varargin name-value pair
+% arguments (params) and adjusting default values as appropriate
+
 function params = structInpParse(params,inpArgs)
 
 paramNames = fieldnames(params);

@@ -1,3 +1,24 @@
+% targOrder.m - function for obtaining the order of choices in an
+% environment.
+%
+% Required inputs:
+%
+%   allLabels -- event labels, as obtained from getFiles.m
+%
+% Optional inputs:
+%
+%   'maxChoices'
+%       Integer value (e.g. [8]) -- Some environments appear to have many more
+%           than 8 choices. We can choose whether to keep or reject
+%           environments above this 'maxChoices' threshold.
+%   'removeAbove'
+%       [1] or [0] (0 by default) -- choose whether or not to eliminate
+%       trials that fall above the 'maxChoices' threshold.
+%   'concatenate'
+%       [1] or [0] (1 by default) -- choose whether to concatenate across
+%       data files, or keep allOrders specific to a given data file
+
+
 function [allOrders,varargout] = targOrder(allLabels,varargin)
 
 params = struct(... %default values of params struct

@@ -1,22 +1,18 @@
 % --------------------------------
 % load in files
 % --------------------------------
-% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
 
 % --------------------------------
 % proportions
 % --------------------------------
 
-[allOrders,orderInds] = targOrder(allLabels,'removeAbove',1);
-[posProp] = targProp(allOrders,'treatDivZero',[1 NaN]);
-
-%%
-n = plotProp(posProp,'plotType','hist','histEdges',[0:.3333:4]);
-
-%%
+[allOrders,orderInds] = targOrder(allLabels,'removeAbove',1,'maxChoices',9);
+[posProp] = targProp(allOrders,'treatDivZero',[1],'choiceInd','on','addOrigin',1);
+n = plotProp(posProp,'plotType','scatter','histEdges',[0:.3333:4]);
 
 % --------------------------------
 % get valence
@@ -29,7 +25,7 @@ n = plotProp(posProp,'plotType','hist','histEdges',[0:.3333:4]);
 % separate by trial / image type
 % --------------------------------
 
-[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','neg',[1]); % separate based on trial events
+[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','neg',[]); % separate based on trial events
 
 % --------------------------------
 % reject images that were displayed for too little time
@@ -81,21 +77,3 @@ csvwrite('nFixations.csv',nFixations);
 %% for checking that each image presentation has a looking duration associated with it
 
 nImages = checkLengths(wantedTimes); %check if separateTrials is working; compare this value with the length of 'durs'
-
-%all 1097
-% all valence = 509 | 2017
-% all social = 588 
-
-%neg - 276
-%pos - 233
-%soc - 353
-%non - 235
-
-%all - 7587 | 1097
-%all valence - 3482 | 509
-%all social - 4105 | 588
-
-%neg - 1922
-%pos - 1560
-%soc - 2684 | 353
-%non - 1421 | 235
