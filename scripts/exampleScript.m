@@ -11,8 +11,8 @@ umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data
 % --------------------------------
 
 [allOrders,orderInds] = targOrder(allLabels,'removeAbove',1,'maxChoices',9);
-[posProp] = targProp(allOrders,'treatDivZero',[1],'choiceInd','on','addOrigin',1);
-n = plotProp(posProp,'plotType','scatter','histEdges',[0:.3333:4]);
+[posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);
+n = plotProp(posProp,'plotType','scatter');
 
 % --------------------------------
 % get valence
