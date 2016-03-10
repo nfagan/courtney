@@ -1,5 +1,6 @@
-% possible outputs include 'n images', 'proportion', 'raw counts', or
-% 'average duration'. Define the region of interest as 'whole face' or 'roi'
+% Possible outputs include 'n images', 'proportion', 'raw counts',
+% 'average duration', or 'normalized proportion'. Define the region of 
+% interest as 'whole face' or 'roi'
 
 function M = genTable(saveData,region)
 
@@ -7,6 +8,15 @@ global toExamine;
 outputType = toExamine;
 
 region = lower(region); outputType = lower(outputType); %make lowercase
+
+possibleInputs = {'n images','proportion','raw counts','average duration',...
+    'normalized proportion'};
+if sum(strcmp(possibleInputs,toExamine)) == 0
+    for i = 1:length(possibleInputs);
+        fprintf('%s\n',possibleInputs{i});
+    end
+    error('''%s'' is not a recognized output-type. See above for possible values of toExamine',toExamine)
+end
 
 switch region
     case 'roi'
