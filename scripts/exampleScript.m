@@ -2,17 +2,19 @@
 % load in files
 % --------------------------------
 
-% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
 
 % --------------------------------
 % proportions
 % --------------------------------
 
-[allOrders,orderInds] = targOrder(allLabels,'removeAbove',1,'maxChoices',9);
-[posProp] = targProp(allOrders,'choiceInd','off','addOrigin',1,'treatDivZero',[1 NaN]);
-n = plotProp(posProp,'plotType','hist','histEdges',[0:.05:2]);
+[allOrders,orderInds] = targOrder(allLabels,'removeAbove',0,'maxChoices',8);
+[posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1,'treatDivZero',[1]);
+n = plotProp(posProp,'plotType','scatter','histEdges',[0:.05:2]);
+% [posProp] = targProp(allOrders,'choiceInd','off','addOrigin',1,'treatDivZero',[1 NaN]);
+% n = plotProp(posProp,'plotType','hist','histEdges',[0:.05:2]);
 
 % --------------------------------
 % get valence

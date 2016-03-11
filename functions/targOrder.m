@@ -32,33 +32,25 @@ params = structInpParse(params,varargin);
 allOrders = cell(1,length(allLabels));
 allInds = cell(1,length(allLabels));
 for i = 1:length(allLabels);
-    oneFile = allLabels{i}; orderInd = zeros(length(oneFile),1);
-    for j = 1:length(oneFile)     
-        oneLab = oneFile{j};
-        if length(oneLab) >= 12;            
-            if strcmp(oneLab(1:12),'colorOrder: ');
-                orderInd(j) = 1;
-            else
-                orderInd(j) = 0;
-            end
-        else
-            orderInd(j) = 0;
-        end
-    end
+    oneFile = allLabels{i};    
+    
+    batchInd = strcmp(oneFile,'EndBatch');    
     cols = 1:length(oneFile);
-    orderInds = cols(logical(orderInd));
+    orderInds = cols(batchInd);
     
     if isempty(orderInds);
         error(['No start indices were found. Probably this is because the' ...
             , ' syntax for ''colorOrder:'' is different in this file']);
         fprintf('file number = %d',i);
-    else
-        orderInds(2,:) = 0; orderInds(2,end) = length(oneFile);
-        orderInds(2,1:end-1) = orderInds(1,2:end);
+    else        
+        orderInds(2,:) = 1;
+        orderInds(2,2:end) = orderInds(1,1:end-1);
+        
         storeOrders = cell(1,size(orderInds,2));
         storeInds = cell(1,size(orderInds,2));
+        
         for k = 1:size(orderInds,2);
-            extrLabels = oneFile(orderInds(1,k):orderInds(2,k));
+            extrLabels = oneFile(orderInds(2,k):orderInds(1,k));
             rows = 1:length(extrLabels);
             
             posInd = rows(strcmp(extrLabels,'pos_image'));

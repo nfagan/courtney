@@ -38,7 +38,7 @@ params = struct(... %default values of params struct
 
 params = structInpParse(params,varargin);
 
-plotColor = params.color;
+% plotColor = params.color;
 
 hold on;
 
@@ -46,13 +46,6 @@ if strcmp(params.plotType,'scatter');
     
 fitTest = fit(posProp(2,:)',posProp(1,:)','exp1');
 plot(fitTest,posProp(2,:),posProp(1,:));
-    
-% posProp = remEmpty(posProp); %remove empty cells
-% 
-% for i = 1:length(posProp);
-%     scatter(0,1,plotColor);
-%     scatter(1:length(posProp{i}),posProp{i},plotColor);
-% end
     
 xlabel('Choice Number');
 ylabel('Prop. Remaining Negative Choices / Prop. Remaining Positive Choices');
@@ -80,6 +73,7 @@ if strcmp(params.plotType,'hist')
     imagesc(N); colormap(params.colorMap); y2 = colorbar;
     
     set(gca,'ytick',1:size(N,1));
+    toYLabel = cell(1,length(params.histEdges));
     for j = 1:length(params.histEdges);
         toYLabel{j} = num2str(params.histEdges(j));
     end    
