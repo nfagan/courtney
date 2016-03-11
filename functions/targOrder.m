@@ -27,21 +27,7 @@ params = struct(... %default values of params struct
     'concatenate',1 ...
     );    
 
-paramNames = fieldnames(params);
-
-nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
-   error('Name-value pairs are incomplete!')
-end
-
-for pair = reshape(varargin,2,[])
-   inpName = pair{1};
-   if any(strcmp(inpName,paramNames))
-      params.(inpName) = pair{2};
-   else
-      error('%s is not a recognized parameter name',inpName)
-   end
-end
+params = structInpParse(params,varargin);
 
 allOrders = cell(1,length(allLabels));
 allInds = cell(1,length(allLabels));
