@@ -49,7 +49,7 @@ for i = 1:length(wantedTimes);
     firstLookPerImage = cell(1,length(oneTimes));
     patchResidencePerImage = cell(1,length(oneTimes));
     
-    exclude = 0;
+    exclude = zeros(size(oneTimes,1));
     
     for j = 1:size(oneTimes,1); %for each image display time ...
         
