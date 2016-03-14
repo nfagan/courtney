@@ -7,6 +7,9 @@
 %       'plotType'
 %           'scatter' - plot choice by prop. neg / prop. positive
 %           'hist' - plot frequencies of proportions at each choice number
+%       'jitterAmount'
+%           e.g. .005 - specify amount by which each individual proportion
+%           value is stepped away from its "actual" x-coordinate.
 %       'histEdges'
 %           [...] if plotting with 'plotType' 'hist', specify the edges of
 %           the bins to be used by the histcounts function. By default, the
@@ -33,7 +36,8 @@ params = struct(... %default values of params struct
     'plotType','scatter', ...
     'histEdges',[0:.5:2], ...
     'color','k', ...
-    'colorMap','cool' ...
+    'colorMap','cool', ...
+    'jitterAmount',.0005 ...
     ); 
 
 params = structInpParse(params,varargin);
@@ -44,8 +48,10 @@ hold on;
 
 if strcmp(params.plotType,'scatter');
     
+toJitter = addJitter(posProp,params.jitterAmount); %add jitter to x coord    
 fitTest = fit(posProp(2,:)',posProp(1,:)','exp1');
-plot(fitTest,posProp(2,:),posProp(1,:));
+plot(fitTest,toJitter,posProp(1,:));
+% plot(fitTest,posProp(2,:),posProp(1,:));
     
 xlabel('Choice Number');
 ylabel('Prop. Remaining Negative Choices / Prop. Remaining Positive Choices');
