@@ -6,6 +6,8 @@
 umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
 
+%%
+
 % --------------------------------
 % proportions
 % --------------------------------
@@ -29,7 +31,7 @@ n = plotProp(posProp,'plotType','scatter','jitterAmount',.0007);
 % separate by trial / image type
 % --------------------------------
 
-[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','neg',[]); % separate based on trial events
+[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','pos',[]); % separate based on trial events
 
 % --------------------------------
 % reject images that were displayed for too little time
