@@ -12,11 +12,17 @@
 %           than 8 choices. We can choose whether to keep or reject
 %           environments above this 'maxChoices' threshold.
 %   'removeAbove'
-%       [1] or [0] (0 by default) -- choose whether or not to eliminate
+%       [1] or [0] (default) -- choose whether or not to eliminate
 %       trials that fall above the 'maxChoices' threshold.
 %   'concatenate'
-%       [1] or [0] (1 by default) -- choose whether to concatenate across
+%       [1] (default) or [0] -- choose whether to concatenate across
 %       data files, or keep allOrders specific to a given data file
+%   'addLastChoice'
+%       [1] (defalt) or [0] -- for environments in which seven choices were
+%           recorded, specify whether to append an eigth value
+%           corresponding to the valence of the last possible 'choice'.
+%           This will ensure a proportion value can be calculated for the
+%           seventh choice in these environments.
 
 
 function [allOrders,varargout] = targOrder(allLabels,varargin)
@@ -24,7 +30,8 @@ function [allOrders,varargout] = targOrder(allLabels,varargin)
 params = struct(... %default values of params struct
     'maxChoices',8, ...
     'removeAbove',0, ...
-    'concatenate',1 ...
+    'concatenate',1, ...
+    'addLastChoice',1 ...
     );    
 
 params = structInpParse(params,varargin);
@@ -51,6 +58,10 @@ for i = 1:length(allLabels);
         
         for k = 1:size(orderInds,2);
             extrLabels = oneFile(orderInds(2,k):orderInds(1,k));
+            
+            check(k) = sum(strncmpi(extrLabels,'SelectedTarget:',15));
+            check2(k) = sum(strcmp(extrLabels,'pos_image') | strcmp(extrLabels,'neg_image') | strcmp(extrLabels,'social_image') | strcmp(extrLabels,'nonsocial_image'));
+            
             rows = 1:length(extrLabels);
             
             posInd = rows(strcmp(extrLabels,'pos_image'));
@@ -61,6 +72,17 @@ for i = 1:length(allLabels);
             
             intOrders = allInd(2,sortInd);
             intInds = allInd(1,sortInd);
+            
+            if length(intOrders) == 7 && params.addLastChoice
+                lastAvailable = 4 - sum(intOrders);
+                if lastAvailable > 1 || lastAvailable < 0;
+                    error('Fewer than 4 positive or negative targets were presented');
+                else   
+                    intOrders(end+1) = lastAvailable;
+                    intInds(end+1) = 0;
+                end
+            end
+            
             if length(intOrders) < params.maxChoices;
                 intOrders(end+1:params.maxChoices) = NaN;
                 intInds(end+1:params.maxChoices) = NaN;

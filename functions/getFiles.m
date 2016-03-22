@@ -1,4 +1,4 @@
-function [allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory)
+function [allLabels,allTimes,allEvents,varargout] = getFiles(umbrellaDirectory)
 cd(umbrellaDirectory);
 
 allFiles = dir(umbrellaDirectory);
@@ -89,4 +89,9 @@ for j = 1:length(idNumbers); % for each set of data files / for each id number .
     allEvents{j} = fixationEvents;
     
     clear labels times fixationEvents;
+    
+end
+
+if nargout == 4;
+    varargout{1} = idNumbers;
 end

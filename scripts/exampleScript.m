@@ -1,19 +1,18 @@
 % --------------------------------
 % load in files
 % --------------------------------
-
-% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
-[allLabels,allTimes,allEvents] = getFiles(umbrellaDirectory);
-
-%%
+    
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager_only_valence';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
+[allLabels,allTimes,allEvents,id] = getFiles(umbrellaDirectory);
 
 % --------------------------------
 % proportions
 % --------------------------------
 
-[allOrders,orderInds] = targOrder(allLabels,'removeAbove',0,'maxChoices',8);
-[posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1,'treatDivZero',[1]);
+[allOrders,orderInds] = targOrder(allLabels);
+[posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);
 n = plotProp(posProp,'plotType','scatter','jitterAmount',.0007);
 
 %%
