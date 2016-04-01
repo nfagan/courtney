@@ -1,10 +1,10 @@
 % --------------------------------
 % load in files
 % --------------------------------
-    
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
+
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager_only_valence';
-% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 [allLabels,allTimes,allEvents,id] = getFiles(umbrellaDirectory);
 
 % --------------------------------
@@ -12,8 +12,11 @@ umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data
 % --------------------------------
 
 [allOrders,orderInds] = targOrder(allLabels);
-[posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);
-n = plotProp(posProp,'plotType','scatter','jitterAmount',.0007);
+responseTimes = responseTime(allLabels,allTimes);
+%%
+
+% [posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);
+% n = plotProp(posProp,'plotType','scatter','jitterAmount',.0007);
 
 %%
 % [posProp] = targProp(allOrders,'choiceInd','off','addOrigin',1,'treatDivZero',[1 NaN]);
@@ -74,10 +77,10 @@ firstLook = firstLook(aboveThreshold);
 %% save results
 
 % cd('____') %check the current directory to make sure you save into a sensible place!
-csvwrite('durations.csv',lookingDurations);
-csvwrite('pupilSize.csv',pupilSize);
-csvwrite('firstLook.csv',firstLook);
-csvwrite('nFixations.csv',nFixations);
+% csvwrite('durations.csv',lookingDurations);
+% csvwrite('pupilSize.csv',pupilSize);
+% csvwrite('firstLook.csv',firstLook);
+% csvwrite('nFixations.csv',nFixations);
 
 %% for checking that each image presentation has a looking duration associated with it
 

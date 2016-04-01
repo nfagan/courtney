@@ -57,6 +57,7 @@ for j = 1:length(idNumbers); % for each set of data files / for each id number .
     newStruct(logical(toRemove2)) = [];
     newStructNames = {newStruct.name};
     
+%     labels = []; times = [];
     for h = 1:length(newStructNames); %identify efix vs. info files and load in accordingly
         toCheck = (char(newStructNames{h}));
         toCheck(5:end) = [];        
@@ -65,6 +66,11 @@ for j = 1:length(idNumbers); % for each set of data files / for each id number .
             fixationEvents = xlsread(newStruct(h).name);
         elseif strcmp(toCheck,'Info');
             [times,labels] = xlsread(newStruct(h).name);
+%             [~,~,raw] = xlsread(newStruct(h).name);
+%             for jj = 1:length(raw);
+%                 labels{jj,1} = raw{jj,1}; times{jj,1}(:,2) = raw{jj,2}; times{jj,1}(:,1) = NaN;
+%             end
+%             times = concatenateData(times);
         end
     end
     pause(.01);

@@ -20,7 +20,13 @@
 %           specify whether to display an error message, or treat the first
 %           or last occurrence of the tag as the index
 
-function tagIndexPerFile = findTag(imageIndices,allLabels,tag,varargin)
+function tagIndexPerFile = findTag(allLabels,tag,varargin)
+
+global imageIndices;
+
+if isempty(imageIndices);
+    imageIndices = getImageInds(allLabels);
+end
 
 params = struct(...
     'look','before', ...
@@ -31,6 +37,7 @@ params = struct(...
 
 params = structInpParse(params,varargin);
 
+tagIndexPerFile = cell(1,length(allLabels));
 for i = 1:length(allLabels);
     startIndex = imageIndices{i};
 
@@ -65,7 +72,6 @@ for i = 1:length(allLabels);
         elseif sum(findStr) == 1;
             tagIndex(k) = find(findStr == 1) + currentLength;
         end
-%         currentLength = currentLength + length(extrLabels);
     end   
 tagIndexPerFile{i} = tagIndex;
 end % end per file

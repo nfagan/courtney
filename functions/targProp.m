@@ -58,8 +58,10 @@ if strcmp(params.toAnalyze,'remaining');
             oneRow = fixedOrders(k,:);
             oneRow = oneRow(~isnan(oneRow));
 
-            posN = sum(oneRow);
-            negN = length(oneRow) - posN;
+%             posN = sum(oneRow);
+%             negN = length(oneRow) - posN;
+            posN = 4;
+            negN = 4;
 
             intN = 0; intP = 0;            
             oneProp = nan(1,size(fixedOrders,2));

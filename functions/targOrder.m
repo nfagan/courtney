@@ -31,7 +31,8 @@ params = struct(... %default values of params struct
     'maxChoices',8, ...
     'removeAbove',0, ...
     'concatenate',1, ...
-    'addLastChoice',1 ...
+    'addLastChoice',1, ...
+    'compareWith','batch' ...
     );    
 
 params = structInpParse(params,varargin);
@@ -41,17 +42,26 @@ allInds = cell(1,length(allLabels));
 for i = 1:length(allLabels);
     oneFile = allLabels{i};    
     
-    batchInd = strcmp(oneFile,'EndBatch');    
+    if strcmp(params.compareWith,'batch');
+        batchInd = strcmp(oneFile,'EndBatch');
+    elseif strcmp(params.compareWith,'colorOrder');
+        batchInd = strncmpi(oneFile,'colorOrder: ',12);
+    end
+    
     cols = 1:length(oneFile);
     orderInds = cols(batchInd);
     
     if isempty(orderInds);
         error(['No start indices were found. Probably this is because the' ...
-            , ' syntax for ''colorOrder:'' is different in this file']);
-        fprintf('file number = %d',i);
+            , ' syntax for ''colorOrder:'' is different in this file: %d'],i);
     else        
-        orderInds(2,:) = 1;
-        orderInds(2,2:end) = orderInds(1,1:end-1);
+        if strcmp(params.compareWith,'batch');
+            orderInds(2,:) = 1;
+            orderInds(2,2:end) = orderInds(1,1:end-1);
+        elseif strcmp(params.compareWith,'colorOrder');
+            orderInds(2,:) = [orderInds(1,2:end) length(oneFile)];
+            orderInds = flipud(orderInds);
+        end
         
         storeOrders = cell(1,size(orderInds,2));
         storeInds = cell(1,size(orderInds,2));
