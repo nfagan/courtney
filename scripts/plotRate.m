@@ -3,7 +3,7 @@ patchTimes = 0:30;
 travelTimes = .5:.5:5;
 rwdValues = [1:4 4+(2/3):(2/3):4+(8/3)];
 
-responseTimes = responseTime(allLabels,allTimes);
+% responseTimes = responseTime(allLabels,allTimes);
 nSimulations = 100;
 
 for j = 1:length(travelTimes);
@@ -82,8 +82,9 @@ xlabel('Time in Patch (s)');
 ylabel('Reward harvest rate');
 
 
-%%
+%% - Fig 2a
 
+figure;
 plot(travelTimes,xCoord);
 
 ylim([0 25]);

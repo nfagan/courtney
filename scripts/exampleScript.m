@@ -4,15 +4,20 @@
 
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager_only_valence';
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
+
+% umbrellaDirectory= '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_data/DataLager';
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_task_data/Lager';
 [allLabels,allTimes,allEvents,id] = getFiles(umbrellaDirectory);
 
 % --------------------------------
 % proportions
 % --------------------------------
 
-[allOrders,orderInds] = targOrder(allLabels);
+% [allOrders,orderInds] = targOrder(allLabels);
 responseTimes = responseTime(allLabels,allTimes);
+
+histogram(responseTimes,50)
 %%
 
 % [posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);

@@ -6,7 +6,7 @@ rwdValues = [1:4 4+(2/3):(2/3):4+(8/3)];
 
 responseTimes = responseTime(allLabels,allTimes);
 nSimulations = 100;
-
+store_gT = [];
 for k = 1:length(patchTimes)% loop for each patch time ...
     patchRTime = patchTimes(k); %pulling out one time, for example ...
     rate = zeros(1,nSimulations);
@@ -14,7 +14,7 @@ for k = 1:length(patchTimes)% loop for each patch time ...
         resampledResponseTimes = datasample(responseTimes,length(responseTimes));
         meanResponse = mean(resampledResponseTimes)/1000;
         nImages = floor((patchRTime)/(fastestViewTime+meanResponse));
-        if nImages > 8;
+        if nImages > 8
             nImages = 8;
         end
         if nImages == 0
@@ -29,8 +29,9 @@ end
 
 meanGT = mean(store_gT);
 
-%%
+%% plot 1b -- we added a fit line manually with Tools -> Basic fitting
 
+figure;
 plot(patchTimes,meanGT);
 
 newMean = meanGT(1:8:end);
