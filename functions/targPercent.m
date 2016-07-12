@@ -73,6 +73,12 @@ plot(xCoords,negAddSem(1,:),'r');
 plot(xCoords,negAddSem(2,:),'r');
 
 % plot([xCoords; xCoords],negAddSem,'r');
+posVect = posPerc(~isnan(posPerc));
+negVect = negPerc(~isnan(negPerc));
+[h,p,ks2stat]=kstest2(negVect,posVect,'Tail','unequal');
+h
+p
+ks2stat
 
 % -- make actual data points bigger
 
@@ -122,15 +128,16 @@ for i = 1:size(posPerc,2);
     
     plot(newX,extr,'b*','markers',.8); %pos
     plot(newXNeg,extrNeg,'r*','markers',.8);
-end
 
 end
 
+end
 
 % -- labels and limits
 
-xlabel('Choice Number');
-ylabel('Cumulative Proportion of Specific Choices');
+xlabel('Choice Number','FontSize', 12);
+ylabel('Cumulative Proportion of Specific Choices','FontSize', 12);
+legend('neg','pos','Location','southeast');
 
 ylim([0 1]);
 xlim([1 8]);

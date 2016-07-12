@@ -48,6 +48,8 @@ for i = 1:length(wantedTimes);
     nFixPerImage = cell(1,length(oneTimes));
     firstLookPerImage = cell(1,length(oneTimes));
     patchResidencePerImage = cell(1,length(oneTimes));
+    storeImageTimes = nan(size(oneTimes,1),15e3); % make arbitrarily huge;
+                                                  % will remove excess nans later
     
     exclude = zeros(size(oneTimes,1));
     
@@ -95,16 +97,30 @@ for i = 1:length(wantedTimes);
 
             allPup = pupSize(startIndex:endIndex);      
             allX = x(startIndex:endIndex);
-            allY = y(startIndex:endIndex);   
+            allY = y(startIndex:endIndex);
+            
+            allFix = [fixStarts(startIndex:endIndex) fixEnds(startIndex:endIndex)];
 
             checkXBounds = allX >= minX & allX <= maxX;
             checkYBounds = allY >= minY & allY <= maxY;
             checkBounds = checkXBounds & checkYBounds;
 
             allDurs(~checkBounds) = [];
-            allPup(~checkBounds) = [];        
+            allPup(~checkBounds) = [];
+            allFix(~checkBounds) = [];
 
-            if ~isempty(allDurs);                
+            if ~isempty(allDurs);
+                imageTimes = startEndTimes(1):startEndTimes(2); %create a vector of image times to search through
+                for l = 1:size(allFix,1); % for each fix start and end time,
+                                          % replace the corresponding
+                                          % image-time with 1, to indicate
+                                          % a fix-event occurred then
+                    imageTimes(1,find(imageTimes == allFix(l,1)):find(imageTimes == allFix(l,2))) = 1;
+                end
+                
+                imageTimes(1,imageTimes ~= 1) = 0; % Make all other values 0
+                storeImageTimes(step,1:length(imageTimes)) = imageTimes; % store for each image presentation
+                
                 dursPerImage{step} = sum(allDurs);
                 sizePerImage{step} = mean(allPup);
                 nFixPerImage{step} = length(allPup);
@@ -122,6 +138,7 @@ for i = 1:length(wantedTimes);
     [dursPerImage,sizePerImage,nFixPerImage,firstLookPerImage,patchResidencePerImage] = ...
         concatenateData(dursPerImage,sizePerImage,nFixPerImage,firstLookPerImage,patchResidencePerImage);
     
+    storeImageTimesPerFile{i} = storeImageTimes;
     patchResidencePerFile{i} = patchResidencePerImage;
     dursPerFile{i} = dursPerImage;
     sizePerFile{i} = sizePerImage;
@@ -133,9 +150,11 @@ end
 
 [saveDurs,savePupil,saveNFix,saveFirstLook] = concatenateData(dursPerFile,sizePerFile,nFixPerFile,firstLookPerFile);
 savePatchResidence = concatenateData(patchResidencePerFile);
+fixEventPSTH = concatenateData(storeImageTimesPerFile);
 
 % allExclude = sum(concatenateData(allExclude));
 %%%% outputs
+data.fixEventPSTH = fixEventPSTH(~isnan(fixEventPSTH(:,1)),:); %remove nans
 data.allDurations = saveDurs;
 data.firstLook = saveFirstLook;
 data.pupilSize = savePupil;

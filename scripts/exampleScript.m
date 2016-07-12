@@ -4,10 +4,15 @@
 
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager/';
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataLager_only_valence';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/pilot_data/outputpatchtest/excel_files';
 % umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/test_data_2/DataKuro2';
 
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/error_in_sep_trials';
+umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/pilot_data/outputpatchtest/excel_files';
+
 % umbrellaDirectory= '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_data/DataLager';
-umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_task_data/Lager';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_task_data/Lager';
+% umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/error_in_sep_trials';
 [allLabels,allTimes,allEvents,id] = getFiles(umbrellaDirectory);
 
 % --------------------------------
@@ -15,9 +20,9 @@ umbrellaDirectory = '/Volumes/My Passport/NICK/Chang Lab 2016/courtney/new_task_
 % --------------------------------
 
 % [allOrders,orderInds] = targOrder(allLabels);
-responseTimes = responseTime(allLabels,allTimes);
+% responseTimes = responseTime(allLabels,allTimes);
 
-histogram(responseTimes,50)
+% histogram(responseTimes,50)
 %%
 
 % [posProp] = targProp(allOrders,'choiceInd','on','addOrigin',1);
@@ -38,7 +43,7 @@ histogram(responseTimes,50)
 % separate by trial / image type
 % --------------------------------
 
-[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','pos',[]); % separate based on trial events
+[wantedTimes,imageIndices] = separateTrials3(allLabels,allTimes,'travel bar','all valence',[],'expressions',{'afil','neut','fear','threat'}); % separate based on trial events
 
 % --------------------------------
 % reject images that were displayed for too little time
@@ -59,18 +64,30 @@ wantedTimes = durThresh(wantedTimes,threshold);
 
 % patchResidenceTime = getPatchResidence(wantedTimes);
 
+%%
 pos.minX = 0;
 pos.maxX = 300;
 pos.minY = 0;
 pos.maxY = 300;
 
-data = getDur2(wantedTimes,allEvents,pos); %get the looking duration associated with each image, after defining positional boundaries
+data = getDur2(wantedTimes,allEvents); %get the looking duration associated with each image, after defining positional boundaries
 
 lookingDurations = data.allDurations;
 pupilSize = data.pupilSize;
 firstLook = data.firstLook;
 nFixations = data.nFixations;
 patchResidenceTime = data.patchResidence;
+
+binned = get_binned_fix_counts(data,100);
+
+%%
+
+fixEventPSTH = data.fixEventPSTH;
+fixEventPSTH(isnan(fixEventPSTH)) = 0; % make missing values 0
+fixEventPSTH = sum(fixEventPSTH); % sum for each time bin (1ms)
+
+% d = histogram(fixEventPSTH,[0:1e3:5e3]);
+
 
 %%
 aboveThreshold = lookingDurations > 100;
